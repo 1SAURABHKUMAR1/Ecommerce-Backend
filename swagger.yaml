@@ -1,0 +1,241 @@
+openapi : 3.0.0
+
+info: 
+  title: Ecommerce Tshirt API
+  description: A Backend API for Ecommerce Web App
+  version: 1.0.0
+  contact:
+    email: saurabhku463@gmail.com
+    url: "https://saurabhkumar.com"
+
+servers:
+  - url: http://localhost:4000/api/v1
+    description: Development Server
+    #  TODO:
+  - url: https://.com/api/v1
+    description: Production Server
+
+components:
+
+  securitySchemes:
+
+    BasicAuth:
+      type: http
+      scheme: basic
+
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+
+
+paths:
+
+  /:
+    get:
+      tags: 
+        - Home
+      summary: Returns a greating message & if API is up and running
+      responses:
+        200:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  greating:
+                    type: string
+                    example: hello
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+  
+  /signup:
+    post:
+      tags: 
+        - User
+      summary: Signup of User . Required body is email , password , name , photo . Cookie is send back
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - photo
+              properties:
+                name:
+                  type: string
+                  required: true
+                email:
+                  type: string
+                  required: true
+                password:
+                  type: string
+                  required: true
+                photo:
+                  in: formData
+                  type: file
+                  format: binary
+      responses:
+        200:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      name: 
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id: 
+                            type: string
+                          secure_url:
+                            type: string
+                      _id: 
+                        type: string
+                      createdAt:
+                        type: string
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+  
+  /login:
+    post:
+      tags: 
+        - User
+      summary: Login User. Required body is of email and password. Cookie is send back.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  required: true
+                password:
+                  type: string
+                  required: true
+      responses:
+        200:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      name: 
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id: 
+                            type: string
+                          secure_url:
+                            type: string
+                      _id: 
+                        type: string
+                      createdAt:
+                        type: string
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+
+  /logout:
+    get:
+      tags: 
+        - User
+      summary: Logout User And Clear Cookies.
+      responses:
+        200:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+  
+  /forgotpassword:
+    post:
+      tags: 
+        - User
+      summary: Sends Forgot Password Token To User Email.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  required: true
+      responses:
+        200:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+
+
+
+
