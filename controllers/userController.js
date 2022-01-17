@@ -199,3 +199,25 @@ exports.forgotPasswordReset = BigPromise(async (req, res, next) => {
     // send json and cookie to user
     cookieToken(user, res);
 })
+
+
+//  get user profile info if logged in
+exports.LoggedInUserDetails = BigPromise(async (req, res, next) => {
+
+    // get user from isLoggedIn middleware
+
+    // get user from db
+    const user = await User.findById(req.user._id);
+
+    //send response and user data
+    res.status(200).json({
+        success: true,
+        user,
+    });
+})
+
+
+// update user password
+exports.updatePassword = BigPromise(async (req, res, next) => {
+
+});

@@ -210,7 +210,7 @@ paths:
       summary: Sends Forgot Password Token To User Email.
       requestBody:
         content:
-          multipart/form-data:
+          application/json:
             schema:
               type: object
               required:
