@@ -5,6 +5,7 @@ const CustomError = require("../utils/customError");
 const cookieToken = require("../utils/cookieToken");
 const cloudinary = require("cloudinary").v2;
 const emailSend = require("../utils/emailSender");
+const crypto = require("crypto");
 
 // user signup 
 exports.signup = BigPromise(async (req, res, next) => {
@@ -126,7 +127,7 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     // forgot password url and message
-    const myUrl = `${req.protocol}://${req.get("host")}/password/reset/${forgotToken}`
+    const myUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${forgotToken}`
     const message = `Paste The link in your browser to change your password ${myUrl}`;
 
     try {
@@ -153,3 +154,48 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
     }
 
 });
+
+
+// forgot password change password
+exports.forgotPasswordReset = BigPromise(async (req, res, next) => {
+
+    const { token } = req.params;
+
+    // token not present
+    if (!token) {
+        return next(new CustomError('Invalid Url', 400));
+    }
+
+    // hash token again to find encrpyt password stored in db
+    const encryptToken = await crypto.createHash("sha256").update(token).digest("hex");
+
+    // check for token in db  --> both the value show be true ie encrypt token and date > date.now() 
+    const user = await User.findOne({
+        forgotPasswordToken: encryptToken,
+        forgotPasswordExpiry: { $gt: Date.now() }
+    });
+
+    // invalid token or expired
+    if (!user) {
+        return next(new CustomError('Token is invalid or expired!', 400));
+    }
+
+    const { password, confirmPassword } = req.body;
+
+    // check for confirm password and pass
+    if (password != confirmPassword) {
+        return next(new CustomError(`Password And Confirm Password Doesn't Match`, 400));
+    }
+
+    // change password
+    user.password = password;
+
+    // remove forgotpassword token and forgot password expiry
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    // send json and cookie to user
+    cookieToken(user, res);
+})
