@@ -1,26 +1,29 @@
 const nodemailer = require("nodemailer");
 
-// send email function 
-const emailSend = async () => {
+//node miler send mails
+const sendmails = async (objectEmail) => {
 
-    // transporter object
+    // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
         auth: {
-            user: 'christelle.kilback24@ethereal.email',
-            pass: 'McU67c7pZWHZPYjD2W',
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
         },
     });
 
-    let info = await transporter.sendMail({
-        from: 'saurabhku463@gmail.com',
-        to: 'saurabhku463@gmail.com',
-        subject: 'Forgot Password',
-        text: 'token',
-    });
-}
+    // message from argument
+    let message = {
+        from: process.env.SENDER_MAIL,
+        to: objectEmail.toemail,
+        subject: objectEmail.subject,
+        text: objectEmail.message,
+    }
 
-// export function
-module.exports = emailSend;
+    // send mail with defined transport object
+    await transporter.sendMail(message);
+
+};
+
+module.exports = sendmails;

@@ -1,4 +1,3 @@
-// dependencies
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
@@ -41,11 +40,9 @@ const userSchema = new mongoose.Schema({
     },
     forgotPasswordToken: {
         type: String,
-        default: 'abcd',
     },
     forgotPasswordExpiry: {
         type: Date,
-        default: Date.now,
     },
     createdAt: {
         type: Date,

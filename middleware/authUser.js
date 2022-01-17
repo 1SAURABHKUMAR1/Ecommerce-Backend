@@ -1,4 +1,3 @@
-// dependicies
 const jwt = require("jsonwebtoken");
 
 // big promise middleware

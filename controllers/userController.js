@@ -14,7 +14,6 @@ exports.signup = BigPromise(async (req, res, next) => {
         return next(new CustomError('Profile Photo is Required!', 400));
     }
 
-    // get all user info
     const { name, email, password } = req.body;
 
     // if any field missing
@@ -58,7 +57,6 @@ exports.signup = BigPromise(async (req, res, next) => {
 // user login
 exports.login = BigPromise(async (req, res, next) => {
 
-    //user details
     const { email, password } = req.body;
 
     // if field missing
@@ -106,7 +104,6 @@ exports.logout = BigPromise((req, res, next) => {
 // request forgot password
 exports.forgotPassword = BigPromise(async (req, res, next) => {
 
-    // get user email
     const { email } = req.body;
 
     // email is required
@@ -123,13 +120,36 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
     }
 
     //  get forgot password token
-    const forgotToken = await user.getForgotPasswordToken();
+    const forgotToken = await user.getForgotPasswordToken(user);
 
-    emailSend();
+    //update user
+    await user.save({ validateBeforeSave: false });
 
-    //  send message
-    res.status(200).json({
-        success: true,
-        message: "Email Send SuccessFully",
-    });
+    // forgot password url and message
+    const myUrl = `${req.protocol}://${req.get("host")}/password/reset/${forgotToken}`
+    const message = `Paste The link in your browser to change your password ${myUrl}`;
+
+    try {
+
+        // send email
+        await emailSend({
+            toemail: email,
+            subject: "Ecommerce Store :- Forgot Password Request",
+            message,
+        });
+
+        //  send message
+        res.status(200).json({
+            success: true,
+            message: "Email Send SuccessFully",
+        });
+
+    } catch (error) {
+        user.forgotPasswordToken = undefined;
+        user.forgotPasswordExpiry = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        return next(new CustomError(error.message, 400));
+    }
+
 });
