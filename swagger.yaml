@@ -397,4 +397,62 @@ paths:
         500:
           description: Internal Server Error
 
+  /profile/update:
+    post:
+      tags:
+        - User
+      summary: Updates User Name , Email and Photo . Photo is optional.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+              properties:
+                name: 
+                  type: string
+                email:
+                  type: string
+                photo:
+                  in: formData
+                  type: file
+                  format: binary
+      responses:
+        200:
+            description: All Well And Good
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    user:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        role:
+                          type: string
+                        photo:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            secure_url:
+                              type: string
+                        _id:
+                          type: string
+                        createdAt:
+                          type: string
+        400:
+              description: Bad Request
+        500:
+              description: Internal Server Error 
 
+
+# TODO: change url of host via enums

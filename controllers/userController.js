@@ -6,6 +6,7 @@ const cookieToken = require("../utils/cookieToken");
 const cloudinary = require("cloudinary").v2;
 const emailSend = require("../utils/emailSender");
 const crypto = require("crypto");
+const validator = require("validator");
 
 // user signup 
 exports.signup = BigPromise(async (req, res, next) => {
@@ -251,4 +252,60 @@ exports.updatePassword = BigPromise(async (req, res, next) => {
 });
 
 
-//
+// update user details
+exports.updateProfile = BigPromise(async (req, res, next) => {
+
+    // get user from middleware
+
+    const { name, email } = req.body;
+
+    // check if name is not undefined
+    if (!name) {
+        return next(new CustomError('Name Field Cannot Be Empty', 400));
+    }
+
+    // check if email is valid
+    if (!validator.isEmail(email)) {
+        return next(new CustomError('Email is not valid!', 400));
+    }
+
+    // object to replace
+    const newData = {
+        name,
+        email,
+    }
+
+    // if photo is send update
+    if (req.files) {
+
+        // delete old user photo
+        await cloudinary.uploader.destroy(req.user.photo.id);
+
+        // upload user photo
+        const cloudinaryResult = await cloudinary.uploader.upload(req.files.photo.tempFilePath, {
+            folder: "ecommerce",
+            width: 250,
+            crop: "fit",
+        })
+
+        // push photo to be changed
+        newData.photo = {
+            id: cloudinaryResult.public_id,
+            secure_url: cloudinaryResult.secure_url,
+        }
+    }
+
+    // find user and update the properties
+    const user = await User.findByIdAndUpdate(req.user.id, newData, {
+        new: true,
+        runValidators: true,
+    });
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+
+});
+
+

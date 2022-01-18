@@ -12,6 +12,7 @@ const { signup,
     resetPassword,
     LoggedInUserDetails,
     updatePassword,
+    updateProfile,
 } = require("../controllers/userController");
 
 
@@ -23,6 +24,7 @@ router.route("/forgotpassword").post(forgotPassword);
 router.route("/password/reset/:token").post(resetPassword);
 router.route("/profile").get(isLoggedIn, LoggedInUserDetails);
 router.route("/password/update").post(isLoggedIn, updatePassword);
+router.route("/profile/update").post(isLoggedIn, updateProfile);
 
 // exporting routes
 module.exports = router;
