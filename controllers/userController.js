@@ -322,3 +322,15 @@ exports.adminAllUsers = BigPromise(async (req, res, next) => {
     })
 });
 
+
+// get all users who are users only . admins and managers are hidden
+exports.managerAllUsers = BigPromise(async (req, res, next) => {
+
+    // find all user from db
+    const user = await User.find({ role: 'user' });
+
+    res.status(200).json({
+        success: true,
+        user
+    });
+});

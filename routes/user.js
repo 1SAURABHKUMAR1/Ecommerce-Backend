@@ -14,6 +14,7 @@ const { signup,
     updatePassword,
     updateProfile,
     adminAllUsers,
+    managerAllUsers,
 } = require("../controllers/userController");
 
 
@@ -27,8 +28,14 @@ router.route("/profile").get(isLoggedIn, LoggedInUserDetails);
 router.route("/password/update").post(isLoggedIn, updatePassword);
 router.route("/profile/update").post(isLoggedIn, updateProfile);
 
+
 // routes for admin
 router.route("/admin/users").get(isLoggedIn, customRole('admin'), adminAllUsers);
+
+
+// route for manager
+router.route("/manager/users").get(isLoggedIn, customRole('manager'), managerAllUsers);
+
 
 // exporting routes
 module.exports = router;
