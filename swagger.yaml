@@ -549,9 +549,51 @@ paths:
         400:
               description: Bad Request
         500:
-              description: Internal Server Error  
+              description: Internal Server Error 
 
-    
+    put:
+      tags:
+        - Admin
+      summary: Admin able to update details of specific user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: string
+        - name: name
+          in: formData
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: formData
+          required: true
+          schema:
+            type: string
+        - name: role
+          in: formData
+          required: true
+          schema:
+            type: string
+            enum:
+              - user
+              - manager
+              - admin
+      responses:
+        200:
+            description: All Well And Good
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+        400:
+              description: Bad Request
+        500:
+              description: Internal Server Error
 
   /manager/users:
     get:

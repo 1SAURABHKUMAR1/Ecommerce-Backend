@@ -7,6 +7,7 @@ const cloudinary = require("cloudinary").v2;
 const emailSend = require("../utils/emailSender");
 const crypto = require("crypto");
 const validator = require("validator");
+const { closeDelimiter } = require("ejs");
 
 // user signup 
 exports.signup = BigPromise(async (req, res, next) => {
@@ -259,6 +260,11 @@ exports.updateProfile = BigPromise(async (req, res, next) => {
 
     const { name, email } = req.body;
 
+    // all details needed
+    if (!(name && email)) {
+        return next(new CustomError('All fields are mandatory!', 400));
+    }
+
     // check if name is not undefined
     if (!name) {
         return next(new CustomError('Name Field Cannot Be Empty', 400));
@@ -341,6 +347,51 @@ exports.adminGetSingleUser = BigPromise(async (req, res, next) => {
         success: true,
         user
     });
+});
+
+
+// change details of user if admin
+exports.adminChangeUserDetails = BigPromise(async (req, res, next) => {
+
+    // get user name and email
+    const { name, email, role } = req.body;
+
+    // all detials needed
+    if (!(name && email)) {
+        return next(new CustomError('All fields are mandatory!', 400));
+    }
+
+    // if name is undefined
+    if (!name) {
+        return next(new CustomError('Name Field Cannot Be Empty!', 401));
+    }
+
+    // email should match the requirment
+    if (!validator.isEmail(email)) {
+        return next(new CustomError('Email is not valid!', 401));
+    }
+
+    // role should be only user , manager , admin
+    if (!(role == 'user' || role == 'manager' || role == 'admin')) {
+        return next(new CustomError('Role Should Be only User , Manager Or Admin', 400));
+    }
+
+    // obj to send
+    const newData = {
+        name,
+        email,
+        role
+    }
+
+    // update user
+    const user = await User.findByIdAndUpdate(req.params.id, newData, {
+        new: true,
+        runValidators: true,
+    })
+
+    res.status(200).json({
+        success: true
+    })
 });
 
 
