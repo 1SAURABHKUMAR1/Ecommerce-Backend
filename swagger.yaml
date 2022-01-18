@@ -502,6 +502,56 @@ paths:
               description: Bad Request
         500:
               description: Internal Server Error 
+  
+  /admin/user/{id}:
+    get:
+      tags:
+        - Admin
+      summary: Admin able to see details of specific user
+      parameters:
+        name: id
+        in: path
+        required: true
+        schema: 
+          type: string
+      responses:
+        200:
+            description: All Well And Good
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    user:
+                      type: array
+                      items: 
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          email:
+                            type: string
+                          role:
+                            type: string
+                          photo:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              secure_url:
+                                type: string
+                          _id:
+                            type: string
+                          createdAt:
+                            type: string
+        400:
+              description: Bad Request
+        500:
+              description: Internal Server Error  
+
+    
 
   /manager/users:
     get:

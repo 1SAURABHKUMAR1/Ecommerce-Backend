@@ -323,6 +323,27 @@ exports.adminAllUsers = BigPromise(async (req, res, next) => {
 });
 
 
+// get specific user details if admin
+exports.adminGetSingleUser = BigPromise(async (req, res, next) => {
+
+    // id from params
+    const id = req.params.id;
+
+    // get user from db
+    const user = await User.findById(id);
+
+    // if user not present
+    if (!user) {
+        return next(new CustomError('User id is invalid', 400));
+    }
+
+    res.status(200).json({
+        success: true,
+        user
+    });
+});
+
+
 // get all users who are users only . admins and managers are hidden
 exports.managerAllUsers = BigPromise(async (req, res, next) => {
 

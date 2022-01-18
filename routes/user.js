@@ -15,6 +15,7 @@ const { signup,
     updateProfile,
     adminAllUsers,
     managerAllUsers,
+    adminGetSingleUser,
 } = require("../controllers/userController");
 
 
@@ -31,6 +32,7 @@ router.route("/profile/update").post(isLoggedIn, updateProfile);
 
 // routes for admin
 router.route("/admin/users").get(isLoggedIn, customRole('admin'), adminAllUsers);
+router.route("/admin/user/:id").get(isLoggedIn, customRole('admin'), adminGetSingleUser);
 
 
 // route for manager
