@@ -28,3 +28,17 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
     next();
 });
 
+
+// middleware for checking specific role eg- admin , manager
+exports.customRole = (...role) => {
+
+    // ...role converts it into a array 
+    // eg - we send admin --> [admin] and we can check if req.user.role --> admin is in [admin] 
+    return (req, res, next) => {
+        if (!role.includes(req.user.role)) {
+            return next(new CustomError('You are not authorized to visit this page!', 403));
+        }
+        next();
+    }
+
+}

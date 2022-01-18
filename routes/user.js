@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // middleware
-const { isLoggedIn } = require("../middleware/user");
+const { isLoggedIn, customRole } = require("../middleware/user");
 
 // getting user controllers
 const { signup,
@@ -13,6 +13,7 @@ const { signup,
     LoggedInUserDetails,
     updatePassword,
     updateProfile,
+    adminAllUsers,
 } = require("../controllers/userController");
 
 
@@ -25,6 +26,9 @@ router.route("/password/reset/:token").post(resetPassword);
 router.route("/profile").get(isLoggedIn, LoggedInUserDetails);
 router.route("/password/update").post(isLoggedIn, updatePassword);
 router.route("/profile/update").post(isLoggedIn, updateProfile);
+
+// routes for admin
+router.route("/admin/users").get(isLoggedIn, customRole('admin'), adminAllUsers);
 
 // exporting routes
 module.exports = router;

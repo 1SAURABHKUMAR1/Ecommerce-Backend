@@ -9,11 +9,18 @@ info:
     url: "https://saurabhkumar.com"
 
 servers:
-  - url: http://localhost:4000/api/v1
-    description: Development Server
-    #  TODO:
-  - url: https://.com/api/v1
-    description: Production Server
+  - url: "{protocol}://{url}/api/v1"
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+      url:
+        enum:
+          - localhost:4000
+          - .com TODO:
+        default: localhost:4000
 
 components:
 
@@ -454,5 +461,8 @@ paths:
         500:
               description: Internal Server Error 
 
-
-# TODO: change url of host via enums
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      

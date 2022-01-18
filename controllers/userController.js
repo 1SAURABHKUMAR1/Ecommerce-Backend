@@ -309,3 +309,16 @@ exports.updateProfile = BigPromise(async (req, res, next) => {
 });
 
 
+// get all user details if admin
+exports.adminAllUsers = BigPromise(async (req, res, next) => {
+
+    // fetch all user from db
+    const user = await User.find();
+
+    // return array of user
+    res.status(200).json({
+        success: true,
+        user
+    })
+});
+
