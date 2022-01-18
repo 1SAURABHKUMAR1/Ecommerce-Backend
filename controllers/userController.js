@@ -157,7 +157,7 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
 
 
 // forgot password change password
-exports.forgotPasswordReset = BigPromise(async (req, res, next) => {
+exports.resetPassword = BigPromise(async (req, res, next) => {
 
     const { token } = req.params;
 
@@ -204,10 +204,10 @@ exports.forgotPasswordReset = BigPromise(async (req, res, next) => {
 //  get user profile info if logged in
 exports.LoggedInUserDetails = BigPromise(async (req, res, next) => {
 
-    // get user from isLoggedIn middleware
+    // got user from isLoggedIn middleware
 
     // get user from db
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user.id);
 
     //send response and user data
     res.status(200).json({
@@ -220,4 +220,35 @@ exports.LoggedInUserDetails = BigPromise(async (req, res, next) => {
 // update user password
 exports.updatePassword = BigPromise(async (req, res, next) => {
 
+    // got user from isLoggedIn middleware
+
+    const { oldPassword, newPassword } = req.body;
+
+    // if any field is missing
+    if (!(oldPassword && newPassword)) {
+        return next(new CustomError("All Fields Are Mandatory", 401));
+    }
+
+    // user id via middleware
+    const userId = req.user.id;
+
+    // get user from db
+    const user = await User.findById(userId).select("+password");
+
+    // check if oldPassword is coorect
+    const isPasswordCorrect = await user.isValidPassword(oldPassword);
+    if (!isPasswordCorrect) {
+        return next(new CustomError('The Old Password is not Correct!', 401));
+    }
+
+    // change password
+    user.password = newPassword;
+
+    // save user model
+    await user.save();
+
+    cookieToken(user, res);
 });
+
+
+//

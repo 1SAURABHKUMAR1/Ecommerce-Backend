@@ -23,7 +23,7 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // save property
-    req.user = await User.findById(decoded.id);
+    req.user = await User.findById(decoded.user_id);
 
     next();
 });

@@ -9,8 +9,9 @@ const { signup,
     login,
     logout,
     forgotPassword,
-    forgotPasswordReset,
+    resetPassword,
     LoggedInUserDetails,
+    updatePassword,
 } = require("../controllers/userController");
 
 
@@ -19,8 +20,9 @@ router.route("/signup").post(signup);
 router.route("/login").post(login);
 router.route("/logout").get(logout);
 router.route("/forgotpassword").post(forgotPassword);
-router.route("/password/reset/:token").post(forgotPasswordReset);
+router.route("/password/reset/:token").post(resetPassword);
 router.route("/profile").get(isLoggedIn, LoggedInUserDetails);
+router.route("/password/update").post(isLoggedIn, updatePassword);
 
 // exporting routes
 module.exports = router;
