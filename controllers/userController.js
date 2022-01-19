@@ -7,7 +7,7 @@ const cloudinary = require("cloudinary").v2;
 const emailSend = require("../utils/emailSender");
 const crypto = require("crypto");
 const validator = require("validator");
-const { closeDelimiter } = require("ejs");
+
 
 // user signup 
 exports.signup = BigPromise(async (req, res, next) => {
@@ -391,6 +391,29 @@ exports.adminChangeUserDetails = BigPromise(async (req, res, next) => {
 
     res.status(200).json({
         success: true
+    })
+});
+
+
+// admin delete user via id
+exports.adminDeleteUser = BigPromise(async (req, res, next) => {
+
+    // get user from db
+    const user = await User.findById(req.params.id);
+
+    // user doesnot exists
+    if (!user) {
+        return next(new CustomError("User Doesnot Exists!", 401));
+    }
+
+    // delete user photo
+    await cloudinary.uploader.destroy(user.photo.id);
+
+    // delete user
+    await user.remove();
+
+    res.status(200).json({
+        success: true,
     })
 });
 

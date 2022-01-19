@@ -17,6 +17,7 @@ const { signup,
     managerAllUsers,
     adminGetSingleUser,
     adminChangeUserDetails,
+    adminDeleteUser,
 } = require("../controllers/userController");
 
 
@@ -36,6 +37,7 @@ router.route("/admin/users").get(isLoggedIn, customRole('admin'), adminAllUsers)
 router.route("/admin/user/:id")
     .get(isLoggedIn, customRole('admin'), adminGetSingleUser)
     .put(isLoggedIn, customRole('admin'), adminChangeUserDetails)
+    .delete(isLoggedIn, customRole('admin'), adminDeleteUser)
 
 
 // route for manager
