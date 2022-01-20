@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const BigPromise = require("../middleware/bigPromise");
-const customError = require("../utils/customError");
 const CustomError = require("../utils/customError");
 const cookieToken = require("../utils/cookieToken");
 const cloudinary = require("cloudinary").v2;

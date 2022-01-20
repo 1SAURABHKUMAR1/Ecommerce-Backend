@@ -14,7 +14,7 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
         token = req.header("Authorization").replace("Bearer", "");
     }
 
-    // token not present in bot cookie and header
+    // token not present in both cookie and header
     if (!token) {
         return next(new CustomError("Login To Proceded", 401));
     }

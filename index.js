@@ -10,7 +10,6 @@ connectDB();
 
 
 // TODO: cors error
-// TODO: remove page of ejs and make a new ejs form api front end giude
 
 
 // cloudinary config
