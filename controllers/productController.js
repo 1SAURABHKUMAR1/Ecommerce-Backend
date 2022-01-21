@@ -115,3 +115,24 @@ exports.adminGetAllProducts = BigPromise(async (req, res, next) => {
     })
 
 });
+
+
+// get single product
+exports.getSingleProduct = BigPromise(async (req, res, next) => {
+
+    const productId = req.params.id;
+
+    // product is is not passed
+    if (!productId) {
+        return next(CustomError(res, "Product Id Is Required!", 401));
+    }
+
+    // find all data
+    const product = await Product.findById(productId);
+
+    res.status(200).json({
+        success: true,
+        product
+    });
+
+});

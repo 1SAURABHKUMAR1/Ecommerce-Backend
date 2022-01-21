@@ -10,12 +10,13 @@ const {
     addProduct,
     filterProduct,
     adminGetAllProducts,
+    getSingleProduct,
 } = require("../controllers/productController");
 
 
 // product route
-router.route("/product").get(isLoggedIn, filterProduct);
-
+router.route("/product").get(filterProduct);
+router.route("/product/:id").get(getSingleProduct);
 
 // product route for admin
 router.route("/admin/product/add").post(isLoggedIn, customRole('admin'), addProduct);

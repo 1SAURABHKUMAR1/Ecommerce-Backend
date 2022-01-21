@@ -775,3 +775,11 @@ paths:
     get:
       description: 
       parameters:
+
+  /admin/products:
+    get:
+
+  /product/{id}:
+    get:
+
+  
