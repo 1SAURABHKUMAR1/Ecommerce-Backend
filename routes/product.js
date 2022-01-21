@@ -12,6 +12,7 @@ const {
     adminGetAllProducts,
     getSingleProduct,
     adminUpdateProductInfo,
+    adminDeleteProduct,
 } = require("../controllers/productController");
 
 
@@ -23,7 +24,9 @@ router.route("/product/:id").get(getSingleProduct);
 // product route for admin
 router.route("/admin/product/add").post(isLoggedIn, customRole('admin'), addProduct);
 router.route("/admin/products").get(isLoggedIn, customRole('admin'), adminGetAllProducts);
-router.route("/admin/product/:id").put(isLoggedIn, customRole('admin'), adminUpdateProductInfo);
+router.route("/admin/product/:id")
+    .put(isLoggedIn, customRole('admin'), adminUpdateProductInfo)
+    .delete(isLoggedIn, customRole("admin"), adminDeleteProduct);
 
 
 module.exports = router;

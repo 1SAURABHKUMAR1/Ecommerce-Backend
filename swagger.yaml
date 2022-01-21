@@ -784,3 +784,5 @@ paths:
 
   /admin/product/{id}:
     put:
+
+    delete:
