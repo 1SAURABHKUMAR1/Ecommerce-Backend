@@ -509,11 +509,11 @@ paths:
         - Admin
       summary: Admin able to see details of specific user
       parameters:
-        name: id
-        in: path
-        required: true
-        schema: 
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: string
       responses:
         200:
             description: All Well And Good
@@ -662,4 +662,116 @@ paths:
         500:
               description: Internal Server Error 
 
-  
+  /admin/product/add:
+    post:
+      tags:
+        - Admin
+      summary: Admin Can Add Products
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - price
+                - description
+                - category
+                - stock
+                - brand
+                - photos
+              properties:
+                name:
+                  type: string
+                  required: true
+                price:
+                  type: number
+                  required: true
+                description:
+                  type: string
+                  required: true
+                category:
+                  type: string
+                  required: true
+                  enum: [shortsleeves , longsleeves , sweatshirt , hoodies]
+                stock:
+                  type: number
+                  required: true
+                brand: 
+                  type: string
+                  required: true
+                photos:
+                  type: array
+                  items:
+                    in: formData
+                    type: file
+                    format: binary
+      responses:
+        200:  
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  product:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                      name: 
+                        type: string
+                      price: 
+                        type: number
+                        default: 0
+                      description: 
+                        type: string
+                      category:
+                        type: string
+                      brand:
+                        type: string
+                      ratings:
+                        type: number
+                        default: 0
+                      numberOfReviews:
+                        type: number
+                        default: 0
+                      user:
+                        type: string
+                      photos: 
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            secure_url:
+                              type: string
+                      reviews:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            comment:
+                              type: string
+                            user:
+                              type: string
+                            name:
+                              type: string
+                            ratings:
+                              type: number
+                              default: 0
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+
+  # TODO: 
+  /product:
+    get:
+      description: 
+      parameters:

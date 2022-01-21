@@ -5,7 +5,8 @@ const router = express.Router();
 const { isLoggedIn, customRole } = require("../middleware/user");
 
 // getting user controllers
-const { signup,
+const {
+    signup,
     login,
     logout,
     forgotPassword,

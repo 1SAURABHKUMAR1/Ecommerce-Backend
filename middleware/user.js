@@ -16,7 +16,7 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
 
     // token not present in both cookie and header
     if (!token) {
-        return next(new CustomError("Login To Proceded", 401));
+        return next(CustomError(res, "Login To Proceded", 400));
     }
 
     // decode the payload from jwt
@@ -36,7 +36,7 @@ exports.customRole = (...role) => {
     // eg - we send admin --> [admin] and we can check if req.user.role --> admin is in [admin] 
     return (req, res, next) => {
         if (!role.includes(req.user.role)) {
-            return next(new CustomError('You are not authorized to visit this page!', 403));
+            return next(CustomError(res, "You are not authorized to visit this page!", 403));
         }
         next();
     }

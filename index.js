@@ -9,9 +9,6 @@ const cloudinary = require("cloudinary").v2;
 connectDB();
 
 
-// TODO: cors error
-
-
 // cloudinary config
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,

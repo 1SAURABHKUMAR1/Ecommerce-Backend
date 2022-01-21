@@ -13,21 +13,21 @@ exports.signup = BigPromise(async (req, res, next) => {
 
     // if photo not present
     if (!req.files) {
-        return next(new CustomError('Profile Photo is Required!', 400));
+        return next(CustomError(res, "Profile Photo is Required!", 400));
     }
 
     const { name, email, password } = req.body;
 
     // if any field missing
     if (!(name && email && password)) {
-        return next(new customError('All Fields Are Mandatory !', 400));
+        return next(CustomError(res, "All Fields Are Mandatory !", 400));
     }
 
     // check in db
     const userDB = await User.findOne({ email: email });
 
     if (userDB) {
-        return next(new CustomError('Email Already Exists', 400));
+        return next(CustomError(res, "Email Already Exists", 400));
     }
 
     // store photo to cloudinary
@@ -63,7 +63,7 @@ exports.login = BigPromise(async (req, res, next) => {
 
     // if field missing
     if (!(email && password)) {
-        return next(new CustomError('All Fields are mandatory !', 400));
+        return next(CustomError(res, "All Fields are mandatory !", 400));
     }
 
     // get user from db
@@ -71,7 +71,7 @@ exports.login = BigPromise(async (req, res, next) => {
 
     // if user not present in db
     if (!user) {
-        return next(new CustomError('Email or password in not valid!', 400));
+        return next(CustomError(res, "Email or password in not valid!", 400));
     }
 
     // check for password
@@ -79,7 +79,7 @@ exports.login = BigPromise(async (req, res, next) => {
 
     // if password is invalid
     if (!isPasswordCorrect) {
-        return next(new CustomError('Email or password in not valid!', 400));
+        return next(CustomError(res, "Email or password in not valid!", 400));
     }
 
     // return user cookie
@@ -110,7 +110,7 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
 
     // email is required
     if (!email) {
-        return next(new CustomError('Email is Required', 400));
+        return next(CustomError(res, "Email is Required", 400));
     }
 
     // get user from db
@@ -118,7 +118,7 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
 
     // if user not present
     if (!user) {
-        return next(new CustomError('Email is not registered', 400));
+        return next(CustomError(res, "Email is not registered", 400));
     }
 
     //  get forgot password token
@@ -151,7 +151,7 @@ exports.forgotPassword = BigPromise(async (req, res, next) => {
         user.forgotPasswordExpiry = undefined;
         await user.save({ validateBeforeSave: false });
 
-        return next(new CustomError(error.message, 400));
+        return next(CustomError(res, error.message, 400));
     }
 
 });
@@ -164,7 +164,7 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
 
     // token not present
     if (!token) {
-        return next(new CustomError('Invalid Url', 400));
+        return next(CustomError(res, "Invalid Url", 400));
     }
 
     // hash token again to find encrpyt password stored in db
@@ -178,14 +178,14 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
 
     // invalid token or expired
     if (!user) {
-        return next(new CustomError('Token is invalid or expired!', 400));
+        return next(CustomError(res, "Token is invalid or expired!", 400));
     }
 
     const { password, confirmPassword } = req.body;
 
     // check for confirm password and pass
     if (password != confirmPassword) {
-        return next(new CustomError(`Password And Confirm Password Doesn't Match`, 400));
+        return next(CustomError(res, "Password And Confirm Password Doesn't Match", 400));
     }
 
     // change password
@@ -227,7 +227,7 @@ exports.updatePassword = BigPromise(async (req, res, next) => {
 
     // if any field is missing
     if (!(oldPassword && newPassword)) {
-        return next(new CustomError("All Fields Are Mandatory", 401));
+        return next(CustomError(res, "All Fields Are Mandatory", 400));
     }
 
     // user id via middleware
@@ -239,7 +239,7 @@ exports.updatePassword = BigPromise(async (req, res, next) => {
     // check if oldPassword is coorect
     const isPasswordCorrect = await user.isValidPassword(oldPassword);
     if (!isPasswordCorrect) {
-        return next(new CustomError('The Old Password is not Correct!', 401));
+        return next(CustomError(res, "The Old Password is not Correct!", 400));
     }
 
     // change password
@@ -261,17 +261,17 @@ exports.updateProfile = BigPromise(async (req, res, next) => {
 
     // all details needed
     if (!(name && email)) {
-        return next(new CustomError('All fields are mandatory!', 400));
+        return next(CustomError(res, "All fields are mandatory!", 400));
     }
 
     // check if name is not undefined
     if (!name) {
-        return next(new CustomError('Name Field Cannot Be Empty', 400));
+        return next(CustomError(res, "Name Field Cannot Be Empty", 400));
     }
 
     // check if email is valid
     if (!validator.isEmail(email)) {
-        return next(new CustomError('Email is not valid!', 400));
+        return next(CustomError(res, "Email is not valid!", 400));
     }
 
     // object to replace
@@ -339,7 +339,7 @@ exports.adminGetSingleUser = BigPromise(async (req, res, next) => {
 
     // if user not present
     if (!user) {
-        return next(new CustomError('User id is invalid', 400));
+        return next(CustomError(res, "User id is invalid", 400));
     }
 
     res.status(200).json({
@@ -357,22 +357,22 @@ exports.adminChangeUserDetails = BigPromise(async (req, res, next) => {
 
     // all detials needed
     if (!(name && email)) {
-        return next(new CustomError('All fields are mandatory!', 400));
+        return next(CustomError(res, "All fields are mandatory!", 400));
     }
 
     // if name is undefined
     if (!name) {
-        return next(new CustomError('Name Field Cannot Be Empty!', 401));
+        return next(CustomError(res, "Name Field Cannot Be Empty!", 400));
     }
 
     // email should match the requirment
     if (!validator.isEmail(email)) {
-        return next(new CustomError('Email is not valid!', 401));
+        return next(CustomError(res, "Email is not valid!", 400));
     }
 
     // role should be only user , manager , admin
     if (!(role == 'user' || role == 'manager' || role == 'admin')) {
-        return next(new CustomError('Role Should Be only User , Manager Or Admin', 400));
+        return next(CustomError(res, "Role Should Be only User , Manager Or Admin", 400));
     }
 
     // obj to send
@@ -402,7 +402,7 @@ exports.adminDeleteUser = BigPromise(async (req, res, next) => {
 
     // user doesnot exists
     if (!user) {
-        return next(new CustomError("User Doesnot Exists!", 401));
+        return next(CustomError(res, "User Doesnot Exists!", 400));
     }
 
     // delete user photo

@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const ejs = require("ejs");
+const cors = require("cors");
 
 
 // for swagger documentation
@@ -21,6 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // ejs middlware
 app.set("view engine", "ejs");
+
+
+// cors middleware
+app.use(cors({ origin: '*' })); // TODO: cors mongoose
 
 
 // cookie and file middleware

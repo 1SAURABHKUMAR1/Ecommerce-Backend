@@ -6,15 +6,20 @@ const { isLoggedIn, customRole } = require("../middleware/user")
 
 
 // controller of product
-const { addProduct,
+const {
+    addProduct,
+    filterProduct,
+    adminGetAllProducts,
 } = require("../controllers/productController");
 
 
 // product route
+router.route("/product").get(isLoggedIn, filterProduct);
 
 
 // product route for admin
 router.route("/admin/product/add").post(isLoggedIn, customRole('admin'), addProduct);
+router.route("/admin/products").get(isLoggedIn, customRole('admin'), adminGetAllProducts);
 
 
 module.exports = router;
