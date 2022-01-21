@@ -130,9 +130,76 @@ exports.getSingleProduct = BigPromise(async (req, res, next) => {
     // find all data
     const product = await Product.findById(productId);
 
+    // no product found
+    if (!product) {
+        return next(CustomError(res, "No Product Found!", 401));
+    }
+
     res.status(200).json({
         success: true,
         product
     });
+
+});
+
+
+// update information of product
+exports.adminUpdateProductInfo = BigPromise(async (req, res, next) => {
+
+    const productId = req.params.id;
+
+    // id not passed
+    if (!productId) {
+        return next(CustomError(res, "Product ID Is Required!", 401));
+    }
+
+    let product = await Product.findById(productId);
+
+    // product not found in db
+    if (!product) {
+        return next(CustomError(res, "Product Not Found", 400));
+    }
+
+    // if photo is present
+    const imagesArray = [];
+
+    if (req.files) {
+
+        // delete existing photos
+        const existingPhotos = product.photos;
+        for (let index = 0; index < existingPhotos.length; index++) {
+            await cloudinary.uploader.destroy(existingPhotos[index].id);
+        }
+
+        // upload new photos
+        for (let index = 0; index < req.files.photos.length; index++) {
+            const imageUpload = await cloudinary.uploader.upload(
+                req.files.photos[index].tempFilePath,
+                {
+                    folder: "ecommerce",
+                }
+            )
+
+            imagesArray.push({
+                id: imageUpload.public_id,
+                secure_url: imageUpload.secure_url,
+            })
+        }
+
+    }
+
+    // update user in body
+    req.body.photos = imagesArray;
+    req.body.user = req.user.id;
+
+    product = await Product.findByIdAndUpdate(productId, req.body, {
+        new: true,
+        runValidators: true,
+    });
+
+    res.status(200).json({
+        success: true,
+        product,
+    })
 
 });

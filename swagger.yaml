@@ -782,4 +782,5 @@ paths:
   /product/{id}:
     get:
 
-  
+  /admin/product/{id}:
+    put:
