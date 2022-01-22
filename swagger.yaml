@@ -1020,7 +1020,7 @@ paths:
     put:
       tags:
         - Admin
-      description:
+      description: Admin Can Change Product Information
       parameters:
         - name: id
           in: path
@@ -1133,7 +1133,7 @@ paths:
     delete:
       tags:
         - Admin
-      description:
+      description: Admin Can Delete Product
       parameters:
         - name: id
           in: path
@@ -1158,13 +1158,26 @@ paths:
         500:
           description: internal server error
 
-
   /review:
     put:
       tags:
         - Product
+      description: User Can Add Review And Update Review
       requestBody:
-
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: number
+                  required: true
+                comment:
+                  type: string
+                  required: true
+                productId:
+                  type: string
+                  required: true
       responses:
           200:
             description: All good success
@@ -1198,8 +1211,13 @@ paths:
     delete:
       tags:
         - Product
-      requestBody:
-
+      description: User Can Delete Review
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema: 
+            type: string
       responses:
           200:
             description: All good success
@@ -1230,11 +1248,10 @@ paths:
           500:
             description: internal server error
                   
-
   /reviews:
     tags:
       - Product
-    description:
+    description: Get Reviews Given By User on A Single Product
     parameters:
     - name: id
       in: query
@@ -1273,4 +1290,4 @@ paths:
       500:
         description: internal server error
 
-  # TODO:
+  
