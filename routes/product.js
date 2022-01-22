@@ -13,6 +13,9 @@ const {
     getSingleProduct,
     adminUpdateProductInfo,
     adminDeleteProduct,
+    addReview,
+    deleteReview,
+    getSingleProductReviews,
 } = require("../controllers/productController");
 
 
@@ -27,6 +30,13 @@ router.route("/admin/products").get(isLoggedIn, customRole('admin'), adminGetAll
 router.route("/admin/product/:id")
     .put(isLoggedIn, customRole('admin'), adminUpdateProductInfo)
     .delete(isLoggedIn, customRole("admin"), adminDeleteProduct);
+
+
+// review routes
+router.route("/review")
+    .put(isLoggedIn, addReview)
+    .delete(isLoggedIn, deleteReview);
+router.route("/reviews").get(getSingleProductReviews);
 
 
 module.exports = router;

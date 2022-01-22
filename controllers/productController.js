@@ -189,9 +189,16 @@ exports.adminUpdateProductInfo = BigPromise(async (req, res, next) => {
     }
 
     // update user in body
-    req.body.photos = imagesArray;
+    if (imagesArray.length > 0) {
+
+        // image array is not empty
+        req.body.photos = imagesArray;
+        console.log("image Array");
+    }
+
     req.body.user = req.user.id;
 
+    // update product
     product = await Product.findByIdAndUpdate(productId, req.body, {
         new: true,
         runValidators: true,
@@ -234,3 +241,133 @@ exports.adminDeleteProduct = BigPromise(async (req, res, next) => {
         message: "Product Deleted Successfully!",
     })
 });
+
+
+// add review on product - if review change the review
+exports.addReview = BigPromise(async (req, res, next) => {
+
+    const { rating, comment, productId } = req.body;
+
+    // all fields required
+    if (!(rating && comment && productId)) {
+        return next(CustomError(res, "All Fields Are Required!", 400));
+    }
+
+    const product = await Product.findById(productId);
+
+    // productID is invalid
+    if (!product) {
+        return next(CustomError(res, "Product Not Found!", 400));
+    }
+
+    //  reiew of user
+    const review = {
+        user: req.user._id,
+        name: req.user.name,
+        rating: Number(rating),
+        comment,
+    }
+
+    // check if user already added
+    const AlreadyCommented = product.reviews.find(
+        (item) => item.user.toString() === req.user._id.toString()
+    );
+
+    //     // if review already exits by user
+    if (AlreadyCommented) {
+
+        product.reviews.forEach((item) => {
+            if (item.user.toString() === req.user._id.toString()) {
+                item.rating = rating;
+                item.comment = comment;
+            }
+        })
+    }
+    else {
+
+        // if user havent given any review
+        product.reviews.push(review);
+        product.numberOfReviews = product.reviews.length;
+    }
+
+    // change average rating
+    product.rating = product.reviews.reduce((previousItem, currentItem) => currentItem.rating + previousItem, 0) / product.reviews.length;
+
+    // save user model
+    await product.save({ validateBeforeSave: false });
+
+
+    res.status(200).json({
+        success: true,
+        reviews: product.reviews,
+    });
+});
+
+
+// delete a review
+exports.deleteReview = BigPromise(async (req, res, next) => {
+
+    const { productId } = req.query;
+
+    if (!productId) {
+        return next(CustomError(res, "All Fields Are Mandatory!", 400));
+    }
+
+    let product = await Product.findById(productId);
+
+    if (!product) {
+        return next(CustomError(res, "Product Not Found!", 400));
+    }
+
+    // new review array with deleted user review
+    const reviews = product.reviews.filter(
+        (item) => item.user.toString() !== req.user._id.toString()
+    );
+
+    const numberOfReviews = reviews.length;
+
+    // average rating
+    const rating = numberOfReviews > 0 ? reviews.reduce((previousItem, currentItem) => previousItem + currentItem.rating, 0) / numberOfReviews : 0;
+
+    // update the product
+    product = await Product.findByIdAndUpdate(productId, {
+        rating,
+        numberOfReviews,
+        reviews,
+    }, {
+        new: true,
+        runValidators: true,
+    })
+
+    res.status(200).json({
+        success: true,
+        reviews: product.reviews,
+    })
+
+});
+
+
+// send all the review of product
+exports.getSingleProductReviews = BigPromise(async (req, res, next) => {
+
+    const { productId } = req.query;
+
+    // product id not passed
+    if (!productId) {
+        return next(CustomError(res, "All Fields Are Mandatory!", 400));
+    }
+
+    const product = await Product.findById(productId);
+
+    // product not found
+    if (!product) {
+        return next(CustomError(res, "Product Not Found", 400));
+    }
+
+    res.status(200).json({
+        success: true,
+        reviews: product.reviews,
+    })
+
+})
+

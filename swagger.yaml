@@ -786,3 +786,9 @@ paths:
     put:
 
     delete:
+
+  /review:
+
+    put:
+
+    delete:
