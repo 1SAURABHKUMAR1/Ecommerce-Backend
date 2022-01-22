@@ -307,7 +307,7 @@ exports.addReview = BigPromise(async (req, res, next) => {
 // delete a review
 exports.deleteReview = BigPromise(async (req, res, next) => {
 
-    const { productId } = req.query;
+    const productId = req.query.id;
 
     if (!productId) {
         return next(CustomError(res, "All Fields Are Mandatory!", 400));
@@ -350,7 +350,7 @@ exports.deleteReview = BigPromise(async (req, res, next) => {
 // send all the review of product
 exports.getSingleProductReviews = BigPromise(async (req, res, next) => {
 
-    const { productId } = req.query;
+    const productId = req.query.id;
 
     // product id not passed
     if (!productId) {
