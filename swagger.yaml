@@ -774,39 +774,38 @@ paths:
     get:
       tags:
         - Product
-      description: A simple Get Request For All Available Products 
+      summary: A simple Get Request For All Available Products 
       parameters:
-        - page:
-            in: path
-            required: true
-            schema:
-              type: number
-        - category:
-            in: path
-            required: true
-            schema:
-              type: string
-            enum: [shortsleeves, longsleeves, sweatshirt, hoodies]
-        - rating[gte]:
-            in: path
-            required: true
-            schema:
-              type: number
-        - price[gte]:
-            in: path
-            required: true
-            schema:
-              type: number
-        - price[lte]:
-            in: path
-            required: true
-            schema:
-              type: number
-        - limit:
-            in: path
-            required: true
-            schema:
-              type: number
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: category
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: rating[gte]
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: price[gte]
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: price[lte]
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: number
       responses:
         200:
           description: All Well And Good
@@ -946,7 +945,7 @@ paths:
     get:
       tags:
         -  Product
-      description: Get A Single Product
+      summary: Get A Single Product
       parameters:
         - name: id
           in: path
@@ -1020,7 +1019,7 @@ paths:
     put:
       tags:
         - Admin
-      description: Admin Can Change Product Information
+      summary: Admin Can Change Product Information
       parameters:
         - name: id
           in: path
@@ -1133,7 +1132,7 @@ paths:
     delete:
       tags:
         - Admin
-      description: Admin Can Delete Product
+      summary: Admin Can Delete Product
       parameters:
         - name: id
           in: path
@@ -1162,7 +1161,7 @@ paths:
     put:
       tags:
         - Product
-      description: User Can Add Review And Update Review
+      summary: User Can Add Review And Update Review
       requestBody:
         content:
           application/json:
@@ -1211,7 +1210,7 @@ paths:
     delete:
       tags:
         - Product
-      description: User Can Delete Review
+      summary: User Can Delete Review
       parameters:
         - name: id
           in: query
@@ -1249,45 +1248,80 @@ paths:
             description: internal server error
                   
   /reviews:
-    tags:
-      - Product
-    description: Get Reviews Given By User on A Single Product
-    parameters:
-    - name: id
-      in: query
-      description: Product ID of Product
-      required: true
-      schema:
-        type: string
-    responses:
-      200:
-        description: All good success
+    get:
+      tags:
+        - Product
+      summary: Get Reviews Given By User on A Single Product
+      parameters:
+      - name: id
+        in: query
+        description: Product ID of Product
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  reviews:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: string
+                        name:
+                          type: string
+                        rating: 
+                          type: number
+                        comment: 
+                          type: string
+                        _id: 
+                          type: string
+                        
+        400:
+          description: Bad request
+        500:
+          description: internal server error
+
+  /capturestripe:
+    post:
+      tags:
+        - Payment
+      summary: Send Amount post data. Amount shuld be multiplied by 100 before sending.
+      requestBody:
         content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  required: true
+
+      responses:
+        content:  
           application/json:
             schema:
               type: object
               properties:
                 success:
                   type: boolean
-                reviews:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      user:
-                        type: string
-                      name:
-                        type: string
-                      rating: 
-                        type: number
-                      comment: 
-                        type: string
-                      _id: 
-                        type: string
-                      
-      400:
-        description: Bad request
-      500:
-        description: internal server error
+                amount:
+                  type: number
+                client_secret:
+                  type: string
+                id:
+                  type: string
 
-  
+  /capturerazorpay:
+    post:
+      tags:
+        - Payment
+      summary:
