@@ -21,6 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.6",
     "morgan": "^1.10.0",
+    "nanoid": "^3.2.0",
     "nodemailer": "^6.7.2",
     "razorpay": "^2.8.0",
     "stripe": "^8.197.0",

@@ -1306,22 +1306,62 @@ paths:
                   required: true
 
       responses:
-        content:  
-          application/json:
-            schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                amount:
-                  type: number
-                client_secret:
-                  type: string
-                id:
-                  type: string
+        200:
+          description: All good success
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  amount:
+                    type: number
+                  client_secret:
+                    type: string
+                  id:
+                    type: string
+        400:
+          description: Bad request
+        500:
+          description: internal server error
 
   /capturerazorpay:
     post:
       tags:
         - Payment
-      summary:
+      summary:  Send Amount post data. Amount shuld be multiplied by 100 before sending.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  amount:
+                    type: number
+                  order:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      amount:
+                        type: number
+                      currency:
+                        type: string
+                                 
+        400:
+          description: Bad request
+        500:
+          description: internal server error
