@@ -6,6 +6,7 @@ const cloudinary = require("cloudinary").v2;
 const emailSend = require("../utils/emailSender");
 const crypto = require("crypto");
 const validator = require("validator");
+const mongoose = require("mongoose");
 
 
 // user signup 
@@ -334,6 +335,11 @@ exports.adminGetSingleUser = BigPromise(async (req, res, next) => {
     // id from params
     const id = req.params.id;
 
+    // if not bson 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return next(CustomError(res, "User Id not valid!", 400));
+    }
+
     // get user from db
     const user = await User.findById(id);
 
@@ -396,6 +402,11 @@ exports.adminChangeUserDetails = BigPromise(async (req, res, next) => {
 
 // admin delete user via id
 exports.adminDeleteUser = BigPromise(async (req, res, next) => {
+
+    // if not bson 
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return next(CustomError(res, "User Id not valid!", 400));
+    }
 
     // get user from db
     const user = await User.findById(req.params.id);

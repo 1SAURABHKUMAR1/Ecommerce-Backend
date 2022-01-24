@@ -3,6 +3,7 @@ const BigPromise = require("../middleware/bigPromise");
 const CustomError = require("../utils/customError");
 const cloudinary = require("cloudinary").v2;
 const WhereClause = require("../utils/whereClause");
+const mongoose = require("mongoose");
 
 
 // add product
@@ -127,6 +128,11 @@ exports.getSingleProduct = BigPromise(async (req, res, next) => {
         return next(CustomError(res, "Product Id Is Required!", 401));
     }
 
+    // if not bson 
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return next(CustomError(res, "Product Id not valid!", 400));
+    }
+
     // find all data
     const product = await Product.findById(productId);
 
@@ -151,6 +157,11 @@ exports.adminUpdateProductInfo = BigPromise(async (req, res, next) => {
     // id not passed
     if (!productId) {
         return next(CustomError(res, "Product ID Is Required!", 401));
+    }
+
+    // if not bson 
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return next(CustomError(res, "Product Id not valid!", 400));
     }
 
     let product = await Product.findById(productId);
@@ -219,6 +230,11 @@ exports.adminDeleteProduct = BigPromise(async (req, res, next) => {
 
     if (!productId) {
         return next(CustomError(res, "Product ID Is Required!", 401));
+    }
+
+    // if not bson 
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return next(CustomError(res, "Product Id not valid!", 400));
     }
 
     const product = await Product.findById(productId);

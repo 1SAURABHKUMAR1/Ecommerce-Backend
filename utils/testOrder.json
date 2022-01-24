@@ -1,0 +1,32 @@
+{
+    "shippingInfo": {
+        "address": "Namkum , Ranchi",
+        "city": "Ranchi",
+        "phoneNumber": "9898989898",
+        "postalCode": "834010",
+        "state": "Jharkhand",
+        "country": "India"
+    },
+    "paymentInfo": {
+        "id": "reciept#11111"
+    },
+    "taxAmount": 106.04,
+    "shippingAmount": 8.96,
+    "totalAmount": 999,
+    "orderItems": [
+        {
+            "name": "Pro Coder Tshirt",
+            "image": "https://res.cloudinary.com/dz5uflnzm/image/upload/v1642752529/ecommerce/li4ryw9d6dvadsckwyig.jpg",
+            "quantity": 1,
+            "price": 999,
+            "product": "61ea6a1c087775e4cd95b9d9"
+        },
+        {
+            "name": "I write code hoodie",
+            "image": "https://res.cloudinary.com/dz5uflnzm/image/upload/v1642752529/ecommerce/li4ryw9d6dvadsckwyig.jpg",
+            "quantity": 1,
+            "price": 7888,
+            "product": "61ea6a95087775e4cd95b9e1"
+        }
+    ]
+}

@@ -133,7 +133,7 @@ paths:
   
   /login:
     post:
-      tags: 
+      tags:
         - User
       summary: Login User. Required body is of email and password. Cookie is send back.
       requestBody:
@@ -166,7 +166,7 @@ paths:
                   user:
                     type: object
                     properties:
-                      name: 
+                      name:
                         type: string
                       email:
                         type: string
@@ -175,11 +175,11 @@ paths:
                       photo:
                         type: object
                         properties:
-                          id: 
+                          id:
                             type: string
                           secure_url:
                             type: string
-                      _id: 
+                      _id:
                         type: string
                       createdAt:
                         type: string
@@ -245,7 +245,7 @@ paths:
 
   /password/reset/{token}:
     post:
-      tags: 
+      tags:
         - User
       summary: Allows user to reset password, validated based on token , send password and confirm password fields.
       parameters:
@@ -253,8 +253,7 @@ paths:
           in: path
           required: true
           schema:
-            type:
-              string
+            type: string
       requestBody:
         content:
           application/json:
@@ -285,7 +284,7 @@ paths:
                   user:
                     type: object
                     properties:
-                      name: 
+                      name:
                         type: string
                       email:
                         type: string
@@ -294,11 +293,11 @@ paths:
                       photo:
                         type: object
                         properties:
-                          id: 
+                          id:
                             type: string
                           secure_url:
                             type: string
-                      _id: 
+                      _id:
                         type: string
                       createdAt:
                         type: string
@@ -309,7 +308,7 @@ paths:
 
   /profile:
     get:
-      tags: 
+      tags:
         - User
       summary: Get User Profile When User is logged in.
       responses:
@@ -349,7 +348,7 @@ paths:
 
   /password/update:
     post:
-      tags: 
+      tags:
         - User
       summary: Update Password When User is Logged in.
       requestBody:
@@ -418,7 +417,7 @@ paths:
                 - name
                 - email
               properties:
-                name: 
+                name:
                   type: string
                 email:
                   type: string
@@ -428,15 +427,57 @@ paths:
                   format: binary
       responses:
         200:
-            description: All Well And Good
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                    user:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role:
+                        type: string
+                      photo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          secure_url:
+                            type: string
+                      _id:
+                        type: string
+                      createdAt:
+                        type: string
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+
+  /admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Admin Gets All User Information
+      responses:
+        200:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: array
+                    items:
                       type: object
                       properties:
                         name:
@@ -457,52 +498,10 @@ paths:
                         createdAt:
                           type: string
         400:
-              description: Bad Request
+          description: Bad Request
         500:
-              description: Internal Server Error 
+          description: Internal Server Error
 
-  /admin/users:
-    get:
-      tags:
-        - Admin
-      summary: Admin Gets All User Information
-      responses:
-        200:
-            description: All Well And Good
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                    user:
-                      type: array
-                      items: 
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          email:
-                            type: string
-                          role:
-                            type: string
-                          photo:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              secure_url:
-                                type: string
-                          _id:
-                            type: string
-                          createdAt:
-                            type: string
-        400:
-              description: Bad Request
-        500:
-              description: Internal Server Error 
-  
   /admin/user/{id}:
     get:
       tags:
@@ -512,44 +511,44 @@ paths:
         - name: id
           in: path
           required: true
-          schema: 
+          schema:
             type: string
       responses:
         200:
-            description: All Well And Good
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                    user:
-                      type: array
-                      items: 
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          email:
-                            type: string
-                          role:
-                            type: string
-                          photo:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              secure_url:
-                                type: string
-                          _id:
-                            type: string
-                          createdAt:
-                            type: string
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        role:
+                          type: string
+                        photo:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            secure_url:
+                              type: string
+                        _id:
+                          type: string
+                        createdAt:
+                          type: string
         400:
-              description: Bad Request
+          description: Bad Request
         500:
-              description: Internal Server Error 
+          description: Internal Server Error
 
     put:
       tags:
@@ -559,7 +558,7 @@ paths:
         - name: id
           in: path
           required: true
-          schema: 
+          schema:
             type: string
         - name: name
           in: formData
@@ -582,18 +581,18 @@ paths:
               - admin
       responses:
         200:
-            description: All Well And Good
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
         400:
-              description: Bad Request
+          description: Bad Request
         500:
-              description: Internal Server Error
+          description: Internal Server Error
 
     delete:
       tags:
@@ -603,22 +602,22 @@ paths:
         - name: id
           in: path
           required: true
-          schema: 
+          schema:
             type: string
       responses:
         200:
-            description: All Well And Good
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
         400:
-              description: Bad Request
+          description: Bad Request
         500:
-              description: Internal Server Error  
+          description: Internal Server Error
 
   /manager/users:
     get:
@@ -627,40 +626,40 @@ paths:
       summary: Manager Get All Users Whose Role is User.
       responses:
         200:
-            description: All Well And Good
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                    user:
-                      type: array
-                      items: 
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          email:
-                            type: string
-                          role:
-                            type: string
-                          photo:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              secure_url:
-                                type: string
-                          _id:
-                            type: string
-                          createdAt:
-                            type: string
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        role:
+                          type: string
+                        photo:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            secure_url:
+                              type: string
+                        _id:
+                          type: string
+                        createdAt:
+                          type: string
         400:
-              description: Bad Request
+          description: Bad Request
         500:
-              description: Internal Server Error 
+          description: Internal Server Error
 
   /admin/product/add:
     post:
@@ -693,11 +692,11 @@ paths:
                 category:
                   type: string
                   required: true
-                  enum: [shortsleeves , longsleeves , sweatshirt , hoodies]
+                  enum: [shortsleeves, longsleeves, sweatshirt, hoodies]
                 stock:
                   type: number
                   required: true
-                brand: 
+                brand:
                   type: string
                   required: true
                 photos:
@@ -707,7 +706,7 @@ paths:
                     type: file
                     format: binary
       responses:
-        200:  
+        200:
           description: All Well And Good
           content:
             application/json:
@@ -719,14 +718,14 @@ paths:
                   product:
                     type: object
                     properties:
-                      _id: 
+                      _id:
                         type: string
-                      name: 
+                      name:
                         type: string
-                      price: 
+                      price:
                         type: number
                         default: 0
-                      description: 
+                      description:
                         type: string
                       category:
                         type: string
@@ -740,7 +739,7 @@ paths:
                         default: 0
                       user:
                         type: string
-                      photos: 
+                      photos:
                         type: array
                         items:
                           type: object
@@ -774,7 +773,7 @@ paths:
     get:
       tags:
         - Product
-      summary: A simple Get Request For All Available Products 
+      summary: A simple Get Request For All Available Products
       parameters:
         - name: page
           in: query
@@ -814,7 +813,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  success: 
+                  success:
                     type: boolean
                   resultPerPage:
                     type: number
@@ -850,11 +849,11 @@ paths:
                           items:
                             type: object
                             properties:
-                              id: 
+                              id:
                                 type: string
                               secure_url:
                                 type: string
-                        reviews: 
+                        reviews:
                           type: array
                           items:
                             type: object
@@ -887,7 +886,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  success: 
+                  success:
                     type: boolean
                   product:
                     type: array
@@ -917,11 +916,11 @@ paths:
                           items:
                             type: object
                             properties:
-                              id: 
+                              id:
                                 type: string
                               secure_url:
                                 type: string
-                        reviews: 
+                        reviews:
                           type: array
                           items:
                             type: object
@@ -944,7 +943,7 @@ paths:
   /product/{id}:
     get:
       tags:
-        -  Product
+        - Product
       summary: Get A Single Product
       parameters:
         - name: id
@@ -954,66 +953,66 @@ paths:
             type: string
 
       responses:
-          200:
-            description: All Well And Good
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success: 
-                      type: boolean
-                    product:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          _id:
-                            type: string
-                          name:
-                            type: string
-                          price:
-                            type: number
-                          description:
-                            type: string
-                          category:
-                            type: string
-                          brand:
-                            type: string
-                          ratings:
-                            type: number
-                          numberOfReviews:
-                            type: number
-                          user:
-                            type: string
-                          photos:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id: 
-                                  type: string
-                                secure_url:
-                                  type: string
-                          reviews: 
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id:
-                                  type: string
-                                comment:
-                                  type: string
-                                user:
-                                  type: string
-                                name:
-                                  type: string
-                                rating:
-                                  type: number
-          400:
-            description: Bad request
-          500:
-            description: internal server error
+        200:
+          description: All Well And Good
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  product:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        name:
+                          type: string
+                        price:
+                          type: number
+                        description:
+                          type: string
+                        category:
+                          type: string
+                        brand:
+                          type: string
+                        ratings:
+                          type: number
+                        numberOfReviews:
+                          type: number
+                        user:
+                          type: string
+                        photos:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              secure_url:
+                                type: string
+                        reviews:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              comment:
+                                type: string
+                              user:
+                                type: string
+                              name:
+                                type: string
+                              rating:
+                                type: number
+        400:
+          description: Bad request
+        500:
+          description: internal server error
 
   /admin/product/{id}:
     put:
@@ -1066,7 +1065,7 @@ paths:
                     description: Product Photos
                     type: file
                     format: binary
-              
+
       responses:
         200:
           description: All Well And Good
@@ -1075,7 +1074,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  success: 
+                  success:
                     type: boolean
                   product:
                     type: array
@@ -1105,11 +1104,11 @@ paths:
                           items:
                             type: object
                             properties:
-                              id: 
+                              id:
                                 type: string
                               secure_url:
                                 type: string
-                        reviews: 
+                        reviews:
                           type: array
                           items:
                             type: object
@@ -1148,9 +1147,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  success: 
+                  success:
                     type: boolean
-                  message: 
+                  message:
                     type: string
         400:
           description: Bad request
@@ -1178,34 +1177,34 @@ paths:
                   type: string
                   required: true
       responses:
-          200:
-            description: All good success
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                    reviews:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          user:
-                            type: string
-                          name:
-                            type: string
-                          rating: 
-                            type: number
-                          comment: 
-                            type: string
-                          _id: 
-                            type: string
-          400:
-            description: Bad request
-          500:
-            description: internal server error
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  reviews:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: string
+                        name:
+                          type: string
+                        rating:
+                          type: number
+                        comment:
+                          type: string
+                        _id:
+                          type: string
+        400:
+          description: Bad request
+        500:
+          description: internal server error
 
     delete:
       tags:
@@ -1215,50 +1214,8 @@ paths:
         - name: id
           in: query
           required: true
-          schema: 
+          schema:
             type: string
-      responses:
-          200:
-            description: All good success
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    success:
-                      type: boolean
-                    reviews:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          user:
-                            type: string
-                          name:
-                            type: string
-                          rating: 
-                            type: number
-                          comment: 
-                            type: string
-                          _id: 
-                            type: string
-          400:
-            description: Bad request
-          500:
-            description: internal server error
-                  
-  /reviews:
-    get:
-      tags:
-        - Product
-      summary: Get Reviews Given By User on A Single Product
-      parameters:
-      - name: id
-        in: query
-        description: Product ID of Product
-        required: true
-        schema:
-          type: string
       responses:
         200:
           description: All good success
@@ -1278,13 +1235,55 @@ paths:
                           type: string
                         name:
                           type: string
-                        rating: 
+                        rating:
                           type: number
-                        comment: 
+                        comment:
                           type: string
-                        _id: 
+                        _id:
                           type: string
-                        
+        400:
+          description: Bad request
+        500:
+          description: internal server error
+
+  /reviews:
+    get:
+      tags:
+        - Product
+      summary: Get Reviews Given By User on A Single Product
+      parameters:
+        - name: id
+          in: query
+          description: Product ID of Product
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  reviews:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: string
+                        name:
+                          type: string
+                        rating:
+                          type: number
+                        comment:
+                          type: string
+                        _id:
+                          type: string
+
         400:
           description: Bad request
         500:
@@ -1308,7 +1307,7 @@ paths:
       responses:
         200:
           description: All good success
-          content:  
+          content:
             application/json:
               schema:
                 type: object
@@ -1330,7 +1329,7 @@ paths:
     post:
       tags:
         - Payment
-      summary:  Send Amount post data. Amount shuld be multiplied by 100 before sending.
+      summary: Send Amount post data. Amount shuld be multiplied by 100 before sending.
       requestBody:
         content:
           application/json:
@@ -1360,8 +1359,369 @@ paths:
                         type: number
                       currency:
                         type: string
-                                 
+
         400:
           description: Bad request
         500:
           description: internal server error
+
+  /order/create:
+    post:
+      tags:
+        - Order
+      summary: Create a new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                shippingInfo:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                    city:
+                      type: string
+                    phoneNumber:
+                      type: string
+                    postalCode:
+                      type: string
+                    state:
+                      type: string
+                    country:
+                      type: string
+                paymentInfo:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                taxAmount:
+                  type: number
+                shippingAmount:
+                  type: number
+                totalAmount:
+                  type: number
+                orderItems:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      quantity:
+                        type: string
+                      image:
+                        type: string
+                      price:
+                        type: number
+                      product:
+                        type: string
+                        description: id of product
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  order:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      user:
+                        type: string
+                      orderStatus:
+                        type: string
+                      createdAt:
+                        type: string
+                      shippingInfo:
+                        type: object
+                        properties:
+                          address:
+                            type: string
+                          city:
+                            type: string
+                          phoneNumber:
+                            type: string
+                          postalCode:
+                            type: string
+                          state:
+                            type: string
+                          country:
+                            type: string
+                      paymentInfo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                      taxAmount:
+                        type: number
+                      shippingAmount:
+                        type: number
+                      totalAmount:
+                        type: number
+                      orderItems:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            quantity:
+                              type: string
+                            image:
+                              type: string
+                            price:
+                              type: number
+                            product:
+                              type: string
+        400:
+          description: Bad request
+        500:
+          description: internal server error
+
+  /order/{orderId}:
+    get:
+      tags:
+        - Order
+      summary: Get A specific order
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  order:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      user:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                          user:
+                            type: string
+                          email:
+                            type: string
+                          role:
+                            type: string
+                      orderStatus:
+                        type: string
+                      createdAt:
+                        type: string
+                      shippingInfo:
+                        type: object
+                        properties:
+                          address:
+                            type: string
+                          city:
+                            type: string
+                          phoneNumber:
+                            type: string
+                          postalCode:
+                            type: string
+                          state:
+                            type: string
+                          country:
+                            type: string
+                      paymentInfo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                      taxAmount:
+                        type: number
+                      shippingAmount:
+                        type: number
+                      totalAmount:
+                        type: number
+                      orderItems:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            quantity:
+                              type: string
+                            image:
+                              type: string
+                            price:
+                              type: number
+                            product:
+                              type: string
+        400:
+          description: Bad request
+        500:
+          description: internal server error
+
+  /myorder:
+    get:
+      tags:
+        - Order
+      summary: Get All Orders Placed By Logged In User
+
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  order:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        user:
+                          type: string
+                        orderStatus:
+                          type: string
+                        createdAt:
+                          type: string
+                        shippingInfo:
+                          type: object
+                          properties:
+                            address:
+                              type: string
+                            city:
+                              type: string
+                            phoneNumber:
+                              type: string
+                            postalCode:
+                              type: string
+                            state:
+                              type: string
+                            country:
+                              type: string
+                        paymentInfo:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                        taxAmount:
+                          type: number
+                        shippingAmount:
+                          type: number
+                        totalAmount:
+                          type: number
+                        orderItems:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              quantity:
+                                type: string
+                              image:
+                                type: string
+                              price:
+                                type: number
+                              product:
+                                type: string
+        400:
+          description: Bad request
+        500:
+          description: internal server error
+
+  /admin/orders:
+    get:
+      tags:
+        - Admin
+      summary: If Admin Get List OF All Orders
+      requestBody:
+
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  order:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        user:
+                          type: string
+                        orderStatus:
+                          type: string
+                        createdAt:
+                          type: string
+                        shippingInfo:
+                          type: object
+                          properties:
+                            address:
+                              type: string
+                            city:
+                              type: string
+                            phoneNumber:
+                              type: string
+                            postalCode:
+                              type: string
+                            state:
+                              type: string
+                            country:
+                              type: string
+                        paymentInfo:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                        taxAmount:
+                          type: number
+                        shippingAmount:
+                          type: number
+                        totalAmount:
+                          type: number
+                        orderItems:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              quantity:
+                                type: string
+                              image:
+                                type: string
+                              price:
+                                type: number
+                              product:
+                                type: string
+        400:
+          description: Bad request
+        500:
+          description: internal server error
+
+  
