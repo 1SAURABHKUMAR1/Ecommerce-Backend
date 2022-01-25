@@ -1734,7 +1734,7 @@ paths:
           in: path
           required: true
           description: Order Id 
-          content:
+          schema:
             type: string
       requestBody:
         content:
@@ -1824,3 +1824,31 @@ paths:
         500:
           description: internal server error
 
+    delete:
+      tags:
+        - Admin
+      summary: Admin can delete order via Order ID
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Id of Order
+          schema:
+            type: string
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    default: "Order Deleted Successully"
+        400:
+          description: Bad request
+        500:
+          description: internal server error

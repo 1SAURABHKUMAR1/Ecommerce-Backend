@@ -135,6 +135,34 @@ exports.adminUpdateOrder = BigPromise(async (req, res, next) => {
 });
 
 
+// admin delete order
+exports.adminDeleteOrder = BigPromise(async (req, res, next) => {
+
+    const orderId = req.params.orderId
+
+    if (!orderId) {
+        return next(CustomError(res, "Order Id is required!", 401));
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+        return next(CustomError(res, "Order Id is not valid", 401));
+    }
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+        return next(CustomError(res, "Order not found", 401));
+    }
+
+    await order.remove();
+
+    res.status(200).json({
+        success: true,
+        message: "Order Deleted Successully",
+    })
+});
+
+
 // function to update product stock
 async function updateProductStock(productId, quantity, res, next) {
 
