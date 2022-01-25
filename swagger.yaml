@@ -1724,4 +1724,103 @@ paths:
         500:
           description: internal server error
 
-  
+  /admin/order/{orderId}:
+    put:
+      tags:
+        - Admin
+      summary: Admin is able to update order details
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          description: Order Id 
+          content:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - orderStatus
+              properties:
+                orderStatus:
+                  type: string
+                  required: true
+                  enum: [processing , delivered]
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  order:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                      user:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                          user:
+                            type: string
+                          email:
+                            type: string
+                          role:
+                            type: string
+                      orderStatus:
+                        type: string
+                      createdAt:
+                        type: string
+                      shippingInfo:
+                        type: object
+                        properties:
+                          address:
+                            type: string
+                          city:
+                            type: string
+                          phoneNumber:
+                            type: string
+                          postalCode:
+                            type: string
+                          state:
+                            type: string
+                          country:
+                            type: string
+                      paymentInfo:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                      taxAmount:
+                        type: number
+                      shippingAmount:
+                        type: number
+                      totalAmount:
+                        type: number
+                      orderItems:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            quantity:
+                              type: string
+                            image:
+                              type: string
+                            price:
+                              type: number
+                            product:
+                              type: string
+        400:
+          description: Bad request
+        500:
+          description: internal server error
+

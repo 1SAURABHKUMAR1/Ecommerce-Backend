@@ -95,3 +95,60 @@ exports.adminGetAllOrders = BigPromise(async (req, res, next) => {
     })
 
 });
+
+
+// admin update single order
+exports.adminUpdateOrder = BigPromise(async (req, res, next) => {
+
+    const orderId = req.params.orderId;
+    const orderStatus = req.body.orderStatus;
+
+    if (!(orderId && orderStatus)) {
+        return next(CustomError(res, "Order Id And Order Status Is required!", 401));
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+        return next(CustomError(res, "Order Id is not valid!", 401));
+    }
+
+    const order = await Order.findById(orderId);
+
+    if (order.orderStatus === "delivered") {
+        return next(CustomError(res, "Order is already delieverd", 401));
+    }
+
+    order.orderStatus = orderStatus;
+
+    if (orderStatus === "delivered") {
+        order.orderItems.forEach(async (items) => {
+            await updateProductStock(items.product, items.quantity, res, next);
+        });
+    }
+
+    await order.save({ validateBeforeSave: false });
+
+    res.status(200).json({
+        success: true,
+        order,
+    })
+
+});
+
+
+// function to update product stock
+async function updateProductStock(productId, quantity, res, next) {
+
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return next(CustomError(res, "Product ID is not valid", 401));
+    }
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+        return next(CustomError(res, "Product Not found!", 401));
+    }
+
+    product.stock = product.stock - quantity;
+
+    await product.save({ validateBeforeSave: false });
+}
