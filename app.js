@@ -25,7 +25,7 @@ app.set("view engine", "ejs");
 
 
 // cors middleware
-app.use(cors({ origin: '*' })); // TODO: cors mongoose
+app.use(cors({ origin: '*' }));
 
 
 // cookie and file middleware
