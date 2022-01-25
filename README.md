@@ -41,11 +41,11 @@ http://localhost:4000/api-docs
 
 ## Demo
 
-The API is live at [url.com](https://) TODO:
+The API is live at [Ecommerce Live](https://ecommerce-tshirt.herokuapp.com/)
 
 ## Demo API Docs
 
-The API Docs is live at [url.com](https://) TODO:
+The API Docs is live at [Ecommerce Docs](https://ecommerce-tshirt.herokuapp.com/api-docs/)
 
 > Miro MindMap is Also Provided
 

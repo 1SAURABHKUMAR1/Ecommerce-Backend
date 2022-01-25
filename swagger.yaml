@@ -19,7 +19,7 @@ servers:
       url:
         enum:
           - localhost:4000
-          - .com TODO:
+          - ecommerce-tshirt.herokuapp.com
         default: localhost:4000
 
 components:
