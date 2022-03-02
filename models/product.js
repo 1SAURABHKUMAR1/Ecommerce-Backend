@@ -1,21 +1,20 @@
-const mongoose = require("mongoose");
-
+const mongoose = require('mongoose');
 
 // product schema
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Product Name is required"],
+        required: [true, 'Product Name is required'],
         trim: true,
-        maxlength: [120, "Product Name Must Be Less Than 120 characters!"],
+        maxlength: [120, 'Product Name Must Be Less Than 120 characters!'],
     },
     price: {
         type: String,
-        required: [true, "Product Price is required"],
+        required: [true, 'Product Price is required'],
     },
     description: {
         type: String,
-        required: [true, "Please Provide Description Of Product!"],
+        required: [true, 'Please Provide Description Of Product!'],
     },
     photos: [
         {
@@ -25,25 +24,25 @@ const productSchema = new mongoose.Schema({
             },
             secure_url: {
                 type: String,
-                required: true
+                required: true,
             },
         },
     ],
     category: {
         type: String,
-        required: [true, "Please Select A Catgory Of Product"],
+        required: [true, 'Please Select A Catgory Of Product'],
         enum: {
-            values: ["shortsleeves", "longsleeves", "sweatshirt", "hoodies"],
-            message: `Please Select Category From- "shortsleeves", "longsleeves", "sweatshirt", "hoodies"`,
-        }
+            values: ['Thin Rims', 'Cat Eye', 'Light Weight', 'Blue Lens'],
+            message: `Please Select Category From- "Thin Rims", "Cat Eye", "Light Weight", "Blue Lens"`,
+        },
     },
     brand: {
         type: String,
-        required: [true, "Please Add A Brand For the Product!"],
+        required: [true, 'Please Add A Brand For the Product!'],
     },
     stock: {
         type: Number,
-        required: [true, "Please Add Stock Number Of Product!"],
+        required: [true, 'Please Add Stock Number Of Product!'],
     },
     rating: {
         type: Number,
@@ -81,10 +80,9 @@ const productSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
 });
 
-
 // export model
-module.exports = mongoose.model("product", productSchema);
+module.exports = mongoose.model('product', productSchema);
