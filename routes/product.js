@@ -20,7 +20,7 @@ const {
 // product route
 router.route('/product').get(filterProduct);
 router.route('/product/:id').get(getSingleProduct);
-router.route('/admin/products').get(isLoggedIn, getAllProducts);
+router.route('/products').get(isLoggedIn, getAllProducts);
 
 // product route for admin
 router
