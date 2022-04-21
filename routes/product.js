@@ -19,8 +19,8 @@ const {
 
 // product route
 router.route('/product').get(filterProduct);
-router.route('/product/:id').get(getSingleProduct);
 router.route('/products').get(getAllProducts);
+router.route('/products/:id').get(getSingleProduct);
 
 // product route for admin
 router

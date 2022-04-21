@@ -114,12 +114,12 @@ exports.getSingleProduct = BigPromise(async (req, res, next) => {
 
     // product is is not passed
     if (!productId) {
-        return next(CustomError(res, 'Product Id Is Required!', 401));
+        return next(CustomError(res, 'Product Id Is Required!', 404));
     }
 
     // if not bson
     if (!mongoose.Types.ObjectId.isValid(productId)) {
-        return next(CustomError(res, 'Product Id not valid!', 400));
+        return next(CustomError(res, 'Product Id not valid!', 404));
     }
 
     // find all data
@@ -127,7 +127,7 @@ exports.getSingleProduct = BigPromise(async (req, res, next) => {
 
     // no product found
     if (!product) {
-        return next(CustomError(res, 'No Product Found!', 401));
+        return next(CustomError(res, 'No Product Found!', 404));
     }
 
     res.status(200).json({
