@@ -10,13 +10,15 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
 
     // if token is not present in cookie but in header
     if (!token && req.header('Authorization')) {
-        token = req.header('Authorization').replace('Bearer', '');
+        token = req.header('Authorization').replace('Bearer ', '');
     }
 
     // token not present in both cookie and header
     if (!token) {
         return next(CustomError(res, 'Login To Proceded', 400));
     }
+
+    console.log(token);
 
     // decode the payload from jwt
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
