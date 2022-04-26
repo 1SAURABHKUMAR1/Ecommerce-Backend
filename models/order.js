@@ -1,59 +1,59 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 // schema order
 const orderSchema = new mongoose.Schema({
     shippingInfo: {
         address: {
             type: String,
-            required: [true, "Address is Required!"]
+            required: [true, 'Address is Required!'],
         },
         city: {
             type: String,
-            required: [true, "City is Required!"]
+            required: [true, 'City is Required!'],
         },
         phoneNumber: {
             type: String,
-            required: [true, "Phone Number is Required!"]
+            required: [true, 'Phone Number is Required!'],
         },
         postalCode: {
             type: String,
-            required: [true, "Postal Code is Required!"]
+            required: [true, 'Postal Code is Required!'],
         },
         state: {
             type: String,
-            required: [true, "State is Required!"]
+            required: [true, 'State is Required!'],
         },
         country: {
             type: String,
-            required: [true, "Country is Required!"]
+            required: [true, 'Country is Required!'],
         },
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
-        required: [true, "User ID is required"],
+        required: [true, 'User ID is required'],
     },
     paymentInfo: {
         id: {
             type: String,
-            required: [true, "Payment Id is Required!"]
-        }
+            required: [true, 'Payment Id is Required!'],
+        },
     },
     taxAmount: {
         type: Number,
-        required: [true, "Tax Amount is Required!"]
+        required: [true, 'Tax Amount is Required!'],
     },
     shippingAmount: {
         type: Number,
-        required: [true, "Shipping Amount is Required!"]
+        required: [true, 'Shipping Amount is Required!'],
     },
     totalAmount: {
         type: Number,
-        required: [true, "Total Amount is Required!"]
+        required: [true, 'Total Amount is Required!'],
     },
     orderStatus: {
         type: String,
-        default: "processing",
+        default: 'processing',
         required: true,
     },
     deliveredAt: {
@@ -85,10 +85,9 @@ const orderSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'product',
                 required: true,
-            }
-        }
+            },
+        },
     ],
-})
+});
 
-
-module.exports = mongoose.model("order", orderSchema);
+module.exports = mongoose.model('order', orderSchema);
