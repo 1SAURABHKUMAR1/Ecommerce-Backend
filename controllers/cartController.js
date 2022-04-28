@@ -1,5 +1,4 @@
 const Cart = require('../models/cart');
-const User = require('../models/user');
 const CustomError = require('../utils/customError');
 const BigPromise = require('../middleware/bigPromise');
 const mongoose = require('mongoose');
@@ -76,13 +75,96 @@ exports.createCart = BigPromise(async (req, res, next) => {
     });
 });
 
+exports.deleteCart = BigPromise(async (req, res, next) => {
+    const { productId } = req.params;
+
+    if (!productId) {
+        return next(CustomError(res, 'Invalid Request', 403));
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return next(CustomError(res, 'Invalid Request', 403));
+    }
+
+    const cart = await Cart.findOne({ user: req.user._id });
+
+    if (!cart) {
+        return next(CustomError(res, 'Invalid Request', 403));
+    }
+
+    cart.cartItems = cart.cartItems.filter(
+        (element) => element.productId.toString() !== productId.toString(),
+    );
+
+    await cart.save();
+
+    res.status(200).json({
+        success: true,
+        cart,
+    });
+});
+
+exports.increaseDecreaseCart = BigPromise(async (req, res, next) => {
+    const { action } = req.body;
+    const { productId } = req.params;
+
+    if (!productId && !action) {
+        return next(CustomError(res, 'Invalid request', 403));
+    }
+
+    if (!(action == 'increment') & !(action == 'decrement')) {
+        return next(CustomError(res, 'Invalid request', 403));
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return next(CustomError(res, 'Invalid request', 403));
+    }
+
+    const cart = await Cart.findOne({
+        user: req.user._id,
+    });
+
+    if (!cart) {
+        return next(CustomError(res, 'No product found', 403));
+    }
+
+    const productIndex = cart.cartItems.findIndex(
+        (element) => element.productId.toString() === productId.toString(),
+    );
+
+    if (productIndex === -1) {
+        return next(CustomError(res, 'Product not in cart', 403));
+    }
+
+    if (action === 'increment') {
+        cart.cartItems[productIndex].quantity++;
+    }
+    if (action === 'decrement') {
+        cart.cartItems[productIndex].quantity === 1
+            ? (cart.cartItems = cart.cartItems.filter(
+                  (element) =>
+                      element.productId.toString() !== productId.toString(),
+              ))
+            : cart.cartItems[productIndex].quantity--;
+    }
+
+    await cart.save();
+
+    res.status(200).json({
+        success: true,
+        cart,
+    });
+});
+
 exports.getLoggedUserCart = BigPromise(async (req, res, next) => {
     const cartItems = await Cart.findOne({
         user: req.user._id,
     });
 
+    const cart = cartItems ? cartItems : [];
+
     res.status(200).json({
         success: true,
-        cartItems: cartItems ? cartItems : [],
+        cart,
     });
 });

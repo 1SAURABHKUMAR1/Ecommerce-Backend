@@ -18,8 +18,6 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
         return next(CustomError(res, 'Login To Proceded', 400));
     }
 
-    console.log(token);
-
     // decode the payload from jwt
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
