@@ -1,5 +1,6 @@
 const Order = require('../models/order');
 const Product = require('../models/product');
+const Cart = require('../models/cart');
 const CustomError = require('../utils/customError');
 const BigPromise = require('../middleware/bigPromise');
 const mongoose = require('mongoose');
@@ -41,6 +42,11 @@ exports.createOrder = BigPromise(async (req, res, next) => {
         return next(CustomError(res, 'Shipping Info is missing !', 400));
     }
 
+    orderItems.length > 0 &&
+        orderItems.forEach((element) => {
+            element._id = undefined;
+        });
+
     const order = await Order.create({
         shippingInfo,
         user: req.user._id,
@@ -50,6 +56,12 @@ exports.createOrder = BigPromise(async (req, res, next) => {
         totalAmount,
         orderItems,
     });
+
+    const cart = await Cart.findOne({ user: req.user._id });
+
+    if (cart) {
+        await cart.remove();
+    }
 
     res.status(200).json({
         success: true,
