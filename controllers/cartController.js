@@ -161,7 +161,7 @@ exports.getLoggedUserCart = BigPromise(async (req, res, next) => {
         user: req.user._id,
     });
 
-    const cart = cartItems ? cartItems : [];
+    const cart = cartItems ?? [];
 
     res.status(200).json({
         success: true,
