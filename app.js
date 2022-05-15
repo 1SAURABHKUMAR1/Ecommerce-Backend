@@ -21,7 +21,10 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 // cors middleware
-app.use(cors({ origin: '*' }));
+const corsOption = {
+    origin: process.env.CLIENT_URL,
+};
+app.use(cors(corsOption));
 
 // cookie and file middleware
 app.use(cookieParser());
