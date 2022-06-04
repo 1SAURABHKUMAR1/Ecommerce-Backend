@@ -23,7 +23,7 @@ app.set('view engine', 'ejs');
 // cors middleware
 const corsOption = {
     origin: process.env.CLIENT_URL,
-    credentials: true,
+    // credentials: true,
 };
 app.use(cors(corsOption));
 
