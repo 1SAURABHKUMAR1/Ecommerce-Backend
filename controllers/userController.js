@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const Cart = require('../models/cart');
+const Order = require('../models/order');
 const BigPromise = require('../middleware/bigPromise');
 const CustomError = require('../utils/customError');
 const cookieToken = require('../utils/cookieToken');
@@ -428,5 +430,28 @@ exports.managerAllUsers = BigPromise(async (req, res, next) => {
     res.status(200).json({
         success: true,
         user,
+    });
+});
+
+// get single user
+exports.singleUserViaId = BigPromise(async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+
+    user.role = undefined;
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    const order = await Order.find({ user: req.user._id });
+
+    const cartItems = await Cart.findOne({
+        user: req.user._id,
+    });
+
+    //send response and user data
+    res.status(200).json({
+        success: true,
+        user,
+        order,
+        cart: cartItems ?? [],
     });
 });
