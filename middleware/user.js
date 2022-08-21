@@ -19,10 +19,26 @@ exports.isLoggedIn = BigPromise(async (req, res, next) => {
     }
 
     // decode the payload from jwt
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    let decoded = null;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+        return CustomError(res, 'Login to procced', 401);
+    }
+
+    if (!decoded) {
+        return CustomError(res, 'Login to procced', 401);
+    }
 
     // save property
-    req.user = await User.findById(decoded.user_id);
+    const user = await User.findOne({ user_id: decoded.user_id });
+
+    if (!user) {
+        return CustomError(res, 'User not found', 401);
+    }
+
+    req.user = user;
 
     next();
 });

@@ -10,6 +10,8 @@ const cookieToken = (user, res) => {
             Date.now() + process.env.COOKIE_EXPIRE_DAY * 24 * 60 * 60 * 1000,
         ),
         httpOnly: true,
+        secure: true,
+        sameSite: 'none',
     };
 
     // password not to be sent
