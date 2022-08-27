@@ -41,11 +41,11 @@ http://localhost:4000/api-docs
 
 ## Demo
 
-The API is live at [Ecommerce Live](https://ecommerce-tshirt.herokuapp.com/)
+The API is live at [Ecommerce Live](https://lenstore-backend.onrender.com/)
 
 ## Demo API Docs
 
-The API Docs is live at [Ecommerce Docs](https://ecommerce-tshirt.herokuapp.com/api-docs/)
+The API Docs is live at [Ecommerce Docs](https://lenstore-backend.onrender.com/api-docs/)
 
 > Miro MindMap is Also Provided
 
